@@ -1,1 +1,52 @@
+// Observer Pattern - Online Course Notifications
+
+import java.util.*;
+
+interface Observer {
+    void update(String message);
+}
+
+class Student implements Observer {
+    private String name;
+
+    public Student(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public void update(String message) {
+        System.out.println(name + " received notification: " + message);
+    }
+}
+class Course {
+    private List<Observer> students = new ArrayList<>();
+
+    public void enroll(Observer student) {
+        students.add(student);
+    }
+
+    public void uploadNewLesson(String lesson) {
+        notifyAllObservers("New lesson uploaded: " + lesson);
+    }
+
+    private void notifyAllObservers(String message) {
+        for (Observer student : students) {
+            student.update(message);
+        }
+    }
+}
+
+public class ObserverDemo {
+    public static void main(String[] args) {
+        Course course = new Course();
+
+        Student s1 = new Student("Alice");
+        Student s2 = new Student("Bob");
+
+        course.enroll(s1);
+        course.enroll(s2);
+
+        course.uploadNewLesson("Design Patterns in Java");
+    }
+}
 
